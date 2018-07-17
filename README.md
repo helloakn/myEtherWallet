@@ -1,6 +1,8 @@
-Solidity 
+**Solidity**
 
-** command line **
+I would like to recomment some tool for editor and EVM.
+first for Solidity Editor and Deploy. remix-ide.
+command line
 
 >remix-ide
 
