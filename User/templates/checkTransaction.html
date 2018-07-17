@@ -1,0 +1,166 @@
+{% extends 'layout.html' %}
+
+{% block pagetitle %}.::Admin Login::.{% endblock %}
+
+{% block cssLink %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css') }}">
+{% endblock %}
+
+
+
+{% block jsLink %}
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/default/web3/dist/web3.min.js') }}" ></script>
+
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/default/jquery-3.3.1.min.js') }}" ></script>
+{% endblock %}
+
+{% block content %}
+{{ privateKey }}
+{% endblock %}
+
+{% block js %}
+
+<script>
+       if (typeof web3 !== 'undefined') {
+           web3 = new Web3(web3.currentProvider);
+       } else {
+           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+       }
+
+        $.each(web3.eth.accounts, function( index, value ) {
+            //console.log( index + ": " + value );
+        });
+        web3.eth.defaultAccount = "0xc0425a81facdb4155ea3f286acf828e5e562616a";//web3.eth.accounts[0];
+        var firstcontractContract = web3.eth.contract(
+            [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "x",
+				"type": "string"
+			}
+		],
+		"name": "set",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "checkBalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "get",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getBalanceByAddr",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getOwnerAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getOwnerBalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "mult_dec",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        );
+        var firstcontract = firstcontractContract.at("0xe5a9d0e73c0a35d76a826d858e51782990c33332");
+
+ firstcontract.getOwnerAddress(function(err,res){
+     if(!err){
+        console.log(res);
+     }
+     else{
+         console.log(err);
+     }
+     
+ });
+
+       
+    </script>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends 'layout.html' %}
+
+{% block pagetitle %}.::Admin Login::.{% endblock %}
+
+{% block cssLink %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css') }}">
+{% endblock %}
+
+
+
+{% block jsLink %}
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/default/web3/dist/web3.min.js') }}" ></script>
+
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/default/jquery-3.3.1.min.js') }}" ></script>
+{% endblock %}
+
+{% block content %}
+
+	<table class="tblProcess">
+		<tr><td>To Address:</td></tr>
+		<tr>
+			<td>
+				<input class="txt" type="text" name="toAddress" id="txtToAddress" value="" />
+			</td>
+		</tr>
+		<tr><td>Amount (ETH):</td></tr>
+		<tr>
+			<td>
+				<input class="txt" type="text" name="amount" id="txtAmount" value="" />
+			</td>
+		</tr>
+		<tr><td>Gas Limit:</td></tr>
+		<tr>
+			<td>
+				<input class="txt" type="text" name="gasLimit" id="txtGasLimit" value="21000" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<input class="btn" type="submit" name="btnSubmit" id="btnSubmit" value="Send" />
+			</td>
+		</tr>
+		
+	</table>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+       if (typeof web3 !== 'undefined') {
+           web3 = new Web3(web3.currentProvider);
+       } else {
+           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8585"));
+       }
+
+        $.each(web3.eth.accounts, function( index, value ) {
+            //console.log( index + ": " + value );
+        });
+        web3.eth.defaultAccount = "0x63fc9b408210B48914952489e52d6952Fcb08039";//web3.eth.accounts[0];
+        var sendCoinContract = web3.eth.contract(
+			[
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "x",
+							"type": "string"
+						}
+					],
+					"name": "set",
+					"outputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "function"
+				},
+				{
+					"inputs": [],
+					"payable": false,
+					"stateMutability": "nonpayable",
+					"type": "constructor"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "_address",
+							"type": "address"
+						}
+					],
+					"name": "checkBalance",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "get",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "_address",
+							"type": "address"
+						}
+					],
+					"name": "getBalanceByAddr",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "getOwnerAddress",
+					"outputs": [
+						{
+							"name": "",
+							"type": "address"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "getOwnerBalance",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "mult_dec",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"stateMutability": "view",
+					"type": "function"
+				}
+			]
+        );
+        var coinContract = sendCoinContract.at("0x63fc9b408210B48914952489e52d6952Fcb08039");
+		function toHex(d) {
+			return  ("0"+(Number(d).toString(16))).slice(-2).toUpperCase()
+		}
+ 		$("#btnSubmit").click(function(e){
+			$(".div-loading").show();
+			
+			/*coinContract.send($("#txtToAddress").val(), web3.toWei($("#txtAmount").val(), "ether"),function(error, result){
+				if(!error){
+					console.log(result)
+					$(".div-loading").hide();
+				}
+				else{
+					console.error(error);
+					$(".div-loading").hide();
+				}
+					*/
+				web3.eth.sendTransaction(
+					{to:$("#txtToAddress").val(), from:"0xc8f3ea1bb2ad0b7ffb0955064a62a0556ba8bea2", value:web3.toWei($("#txtAmount").val(), "ether")},
+				function(error,result){
+					if(!error){
+						alert("success");
+						$(".div-loading").hide();
+					}
+					else{
+						console.log(error);
+						$(".div-loading").hide();
+
+					}
+
+				});
+			
+			
+			//web3.eth.getTransactionCount(myAddress).then(function(v){console.log(v); count = v})  
+
+			  
+
+		 });
+
+       
+    </script>
+{% endblock %}

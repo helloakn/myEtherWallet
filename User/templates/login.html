@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block pagetitle %}.::Admin Login::.{% endblock %}
+
+{% block cssLink %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css') }}">
+{% endblock %}
+
+
+
+{% block jsLink %}
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/default/prefixfree.min.js') }}" ></script>
+
+<script type = "text/javascript" src = "{{ url_for('static', filename = 'js/default/jquery-3.3.1.min.js') }}" ></script>
+{% endblock %}
+
+{% block content %}
+<div class="body"></div>
+		<div class="grad"></div>
+		<div class="header">
+			<div>Flask<span>CRUD</span></div>
+		</div>
+		<br>
+		<div class="login">
+            <form id="frmLogin" method="post">
+				<input type="text" placeholder="username" name="user"><br>
+				<input type="password" placeholder="password" name="password"><br>
+                <input type="button" value="Login" id="btnLogin">
+            </form>
+		</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$("#btnLogin").click(function(event){
+    $("#frmLogin").submit();
+
+$('form').fadeOut(500);
+$('.wrapper').addClass('form-success');
+});
+</script>
+{% endblock %}
