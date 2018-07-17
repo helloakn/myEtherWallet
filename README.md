@@ -1,6 +1,9 @@
 Solidity 
+
 ** command line **
+
 >remix-ide
+
 Then go to browser http://127.0.0.1:8080
 
 
